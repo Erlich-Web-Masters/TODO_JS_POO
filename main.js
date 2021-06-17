@@ -32,12 +32,24 @@ class Interfaz {
     eliminarElemento (elemento){
         if(elemento.name === 'delete'){
             elemento.parentElement.parentElement.parentElement.remove();
-            console.log(elemento.parentElement.parentElement.parentElement);
+            //console.log(elemento.parentElement.parentElement.parentElement);
+            this.mostrarElemento('Producto eliminado satisfactoriamente','warning');
         }
     }
 
-    mostrarElemento (){
+    mostrarElemento (mensaje,claseCss){
+        const div = document.createElement('div');
+        div.className = `alert alert-${claseCss} m-1 text-center`;
+        div.appendChild(document.createTextNode(mensaje));
+        
+        //mostrar en el dom
+        const container = document.querySelector('.container');
+        const app = document.getElementById('app');
+        container.insertBefore(div,app);
 
+        setTimeout( () => {
+            document.querySelector('.alert').remove();
+        },3000);
     }
 }
 
@@ -60,8 +72,12 @@ $LISTA_FORMULARIO.addEventListener('submit', e => {
     const ui = new Interfaz();
     console.log(ui);
 
-    ui.agregarElemento(estante);
+    if($NOMBRE === "" || $PRECIO === ""){
+        return ui.mostrarElemento('Campos vacíos','danger');
+    }
 
+    ui.agregarElemento(estante);
+    ui.mostrarElemento('Producto agregado satisfactoriamente','success');
 
 });
 
